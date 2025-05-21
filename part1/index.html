@@ -38,8 +38,7 @@
 
   <body>
     <h1>Quote generator homework</h1>
-    <h2>Create by Simon Ruepp - Z125087</h2>
-    <!-- Change XXXX to your name and student ID-->
+    <h2>Created by Simon Ruepp - Z125087</h2>
 
     <div id="quoteBox">
       <p id="quote">Click the button to get a quote!</p>
@@ -60,24 +59,28 @@
 
       function getQuote() {
         fetch("quotes.json")
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
-            }
+          .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok");
             return response.json();
           })
-          .then((data) => {
-
+          .then(data => {
             const randomQuote = data[Math.floor(Math.random() * data.length)];
             quoteText.innerText = `"${randomQuote.q}"`;
             authorText.innerText = `- ${randomQuote.a}`;
+
+            const fadeIn = [
+              { opacity: 0, transform: 'translateY(20px)' },
+              { opacity: 1, transform: 'translateY(0)' }
+            ];
+            const timing = { duration: 600, easing: 'ease-out' };
+            quoteText.animate(fadeIn, timing);
+            authorText.animate(fadeIn, timing);
           })
-          .catch((error) => {
-            console.error("Error fetching data:", error);
-          });
+          .catch(error => console.error("Error fetching data:", error));
       }
+
       newQuoteBtn.addEventListener("click", getQuote);
-      getQuote(); // Load a quote on page load
+      getQuote();
     </script>
   </body>
 </html>

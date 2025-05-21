@@ -6,11 +6,13 @@ const questionText = document.getElementById("question");
 const optionsContainer = document.getElementById("options");
 const nextBtn = document.getElementById("nextBtn");
 const resultBox = document.getElementById("result");
+const progressBar = document.getElementById("progress");
 
 fetch("questions.json")
   .then((res) => res.json())
   .then((data) => {
     questions = data;
+    progressBar.max = questions.length;
     showQuestion();
   });
 
@@ -19,11 +21,12 @@ function showQuestion() {
   document.getElementById("question-count").textContent = `Question ${
     currentQuestionIndex + 1
   } of ${questions.length}`;
+
+  progressBar.value = currentQuestionIndex + 1;
+
   const q = questions[currentQuestionIndex];
   questionText.textContent = q.question;
 
-  //INPUT YOUR CODE HERE
-  //HINT: Loop through each option for the current question
   q.options.forEach((option, index) => {
     const button = document.createElement("button");
     button.textContent = option;
